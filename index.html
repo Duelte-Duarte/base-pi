@@ -16,7 +16,7 @@
             apiKey: "AIzaSyClE92hyyPCtnYLEJD5pb2-LOiozl06x9I",
             authDomain: "base-pi-27f19.firebaseapp.com",
             projectId: "base-pi-27f19",
-            storageBucket: "base-pi-27f19.appspot.com",
+            storageBucket: "base-pi-27f19.firebasestorage.app",
             messagingSenderId: "891020319442",
             appId: "1:891020319442:web:db99137022719dfcbe2b0b",
             measurementId: "G-ZRE4RD7WHQ"
@@ -27,7 +27,7 @@
         const database = getDatabase(app);
 
         // Função para adicionar nova linha
-        window.addRow = function() {
+        window.addRow = function () {
             const tableBody = document.querySelector("#geralTable tbody");
             const newRow = tableBody.insertRow();
 
@@ -52,14 +52,14 @@
         }
 
         // Função para exportar para Excel
-        window.exportTableToExcel = function() {
+        window.exportTableToExcel = function () {
             const table = document.getElementById("geralTable");
             const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
             XLSX.writeFile(workbook, "TabelaExportada.xlsx");
         }
 
         // Função para mostrar conteúdo baseado no menu
-        window.showContent = function(section) {
+        window.showContent = function (section) {
             const contentDiv = document.getElementById("content");
             contentDiv.style.display = "none";
 
