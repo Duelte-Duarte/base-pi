@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema com Barra Lateral</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><button onclick="showContent('GERAL')">GERAL</button></li>
+            <li><button onclick="showContent('DADOS DO IMÓVEL')">DADOS DO IMÓVEL</button></li>
+            <li><button onclick="showContent('INFORMAÇÕES DO PROCESSO')">INFORMAÇÕES DO PROCESSO</button></li>
+            <li><button onclick="showContent('INFORMAÇÕES PAGAMENTOS')">INFORMAÇÕES PAGAMENTOS</button></li>
+            <li><button onclick="showContent('INFORMAÇÕES REEMBOLSO')">INFORMAÇÕES REEMBOLSO</button></li>
+        </ul>
+    </div>
+
+    <div class="content" id="content">
+        <h1>Bem-vindo ao Sistema</h1>
+        <p>Selecione uma opção no menu para visualizar as informações.</p>
+    </div>
+
+    <div class="tabela">
+        <div class="buttons">
+            <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
+            <button id="inserir" onclick="addRow()">Adicionar Linha</button>
+        </div>
+        <table id="geralTable" border="1">
+            <thead>
+                <tr>
+                    <th>SCPJUD</th>
+                    <th>RAMO</th>
+                    <th>TIPO DE AÇÃO</th>
+                    <th>OBSERVAÇÃO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas serão adicionadas dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyClE92hyyPCtnYLEJD5pb2-LOiozl06x9I",
+            authDomain: "base-pi-27f19.firebaseapp.com",
+            databaseURL: "https://base-pi-27f19.firebaseio.com",
+            projectId: "base-pi-27f19",
+            storageBucket: "base-pi-27f19.appspot.com",
+            messagingSenderId: "891020319442",
+            appId: "1:891020319442:web:db99137022719dfcbe2b0b",
+        };
+
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Adicionar nova linha na tabela
+        function addRow() {
+            const tableBody = document.querySelector("#geralTable tbody");
+            const newRow = tableBody.insertRow();
+
+            // Adiciona células
+            ["Novo SCPJUD", "Novo Ramo", "Novo Tipo de Ação", "Nova Observação"].forEach((text) => {
+                const cell = newRow.insertCell();
+                cell.contentEditable = "true";
+                cell.textContent = text;
+            });
+
+            // Salvar no Firebase
+            const rowData = {
+                scpjud: "Novo SCPJUD",
+                ramo: "Novo Ramo",
+                tipoAcao: "Novo Tipo de Ação",
+                observacao: "Nova Observação",
+            };
+
+            const newRowRef = database.ref("tabela").push();
+            newRowRef.set(rowData);
+        }
+
+        // Exportar tabela para Excel
+        function exportTableToExcel() {
+            const table = document.getElementById("geralTable");
+            const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+            XLSX.writeFile(workbook, "TabelaExportada.xlsx");
+        }
+
+        // Mostrar conteúdo baseado no menu
+        function showContent(section) {
+            const contentDiv = document.getElementById("content");
+            contentDiv.style.display = "none";
+
+            if (section === "GERAL") {
+                document.querySelector(".tabela").style.display = "block";
+            } else {
+                document.querySelector(".tabela").style.display = "none";
+            }
+        }
+    </script>
+
+    <style>
+
+    </style>
+</body>
+
+</html>
