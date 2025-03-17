@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <!-- Importando o Firebase com módulos -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+        import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
 
         // Configuração do Firebase
         const firebaseConfig = {
@@ -25,6 +25,28 @@
         // Inicializando o Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+
+        // Função para carregar dados do Firebase
+        window.loadData = function () {
+            const tableBody = document.querySelector("#geralTable tbody");
+            const dbRef = ref(database, 'tabela');
+            get(dbRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    tableBody.innerHTML = '';  // Limpar as linhas existentes
+                    Object.keys(data).forEach(key => {
+                        const row = data[key];
+                        const newRow = tableBody.insertRow();
+                        newRow.insertCell().textContent = row.scpjud;
+                        newRow.insertCell().textContent = row.ramo;
+                        newRow.insertCell().textContent = row.tipoAcao;
+                        newRow.insertCell().textContent = row.observacao;
+                    });
+                }
+            }).catch((error) => {
+                console.error("Erro ao carregar dados: ", error);
+            });
+        };
 
         // Função para adicionar nova linha
         window.addRow = function () {
@@ -65,9 +87,15 @@
 
             if (section === "GERAL") {
                 document.querySelector(".tabela").style.display = "block";
+                loadData();  // Carregar os dados sempre que a seção for "GERAL"
             } else {
                 document.querySelector(".tabela").style.display = "none";
             }
+        }
+
+        // Carregar os dados ao iniciar a página
+        window.onload = function () {
+            loadData(); // Carregar dados automaticamente quando a página carregar
         }
     </script>
 </head>
