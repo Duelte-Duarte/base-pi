@@ -49,7 +49,7 @@
     </div>
 
     <script>
-        // Inicializa o Firebase fora da função para garantir que o Firebase é carregado antes
+        // Inicializa o Firebase fora da função, garantindo que seja carregado primeiro
         const firebaseConfig = {
             apiKey: "AIzaSyClE92hyyPCtnYLEJD5pb2-LOiozl06x9I",
             authDomain: "base-pi-27f19.firebaseapp.com",
@@ -60,13 +60,13 @@
             appId: "1:891020319442:web:db99137022719dfcbe2b0b",
         };
 
-        // Inicializa o Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        // Certifique-se de que o Firebase é carregado antes de qualquer outra coisa
+        firebase.initializeApp(firebaseConfig);
 
-        // Agora podemos acessar o banco de dados do Firebase
+        // Agora o Firebase está inicializado, podemos acessar o database
         const database = firebase.database();
 
-        // Adicionar nova linha na tabela
+        // Função para adicionar uma nova linha à tabela
         function addRow() {
             const tableBody = document.querySelector("#geralTable tbody");
             const newRow = tableBody.insertRow();
@@ -90,17 +90,14 @@
             newRowRef.set(rowData);
         }
 
-    </script>
-
-    <script>
-        // Exportar tabela para Excel
+        // Função para exportar a tabela para o Excel
         function exportTableToExcel() {
             const table = document.getElementById("geralTable");
             const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
             XLSX.writeFile(workbook, "TabelaExportada.xlsx");
         }
 
-        // Mostrar conteúdo baseado no menu
+        // Função para exibir o conteúdo baseado na seleção do menu
         function showContent(section) {
             const contentDiv = document.getElementById("content");
             contentDiv.style.display = "none";
@@ -111,11 +108,9 @@
                 document.querySelector(".tabela").style.display = "none";
             }
         }
+
+
     </script>
-
-    <style>
-
-    </style>
 </body>
 
 </html>
