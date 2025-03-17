@@ -11,7 +11,7 @@
         // Importando funções necessárias
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
-
+    
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
@@ -23,16 +23,16 @@
             appId: "1:752056656550:web:cabe9689f4284405088a67",
             measurementId: "G-VNWL9W3NT1"
         };
-
+    
         // Inicializando o Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-
+    
         // Função para carregar dados do Firebase
         window.loadData = function () {
             const tableBody = document.querySelector("#geralTable tbody");
             const dbRef = ref(database, "tabela");
-
+    
             get(dbRef)
                 .then((snapshot) => {
                     if (snapshot.exists()) {
@@ -54,7 +54,7 @@
                     console.error("Erro ao carregar dados: ", error);
                 });
         };
-
+    
         // Função para adicionar nova linha e salvar no Firebase
         window.addRow = function () {
             const newRowData = {
@@ -63,7 +63,7 @@
                 tipoAcao: "Novo Tipo de Ação",
                 observacao: "Nova Observação",
             };
-
+    
             // Salvar no Firebase
             const newRowRef = push(ref(database, "tabela"));
             set(newRowRef, newRowData)
@@ -75,13 +75,13 @@
                     console.error("Erro ao salvar dados: ", error);
                 });
         };
-
+    
         // Carregar dados ao iniciar a página
         window.onload = function () {
             loadData();
         };
     </script>
-
+    
 </head>
 
 <body>
