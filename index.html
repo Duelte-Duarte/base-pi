@@ -49,6 +49,7 @@
     </div>
 
     <script>
+        // Inicializa o Firebase fora da função para garantir que o Firebase é carregado antes
         const firebaseConfig = {
             apiKey: "AIzaSyClE92hyyPCtnYLEJD5pb2-LOiozl06x9I",
             authDomain: "base-pi-27f19.firebaseapp.com",
@@ -61,6 +62,8 @@
 
         // Inicializa o Firebase
         const app = firebase.initializeApp(firebaseConfig);
+
+        // Agora podemos acessar o banco de dados do Firebase
         const database = firebase.database();
 
         // Adicionar nova linha na tabela
@@ -87,6 +90,9 @@
             newRowRef.set(rowData);
         }
 
+    </script>
+
+    <script>
         // Exportar tabela para Excel
         function exportTableToExcel() {
             const table = document.getElementById("geralTable");
