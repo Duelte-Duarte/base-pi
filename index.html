@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema com Barra Lateral</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Carregando os scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js"></script>
+    <!-- Carregando o script para o XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -49,7 +51,6 @@
     </div>
 
     <script>
-        // Inicializa o Firebase fora da função, garantindo que seja carregado primeiro
         const firebaseConfig = {
             apiKey: "AIzaSyClE92hyyPCtnYLEJD5pb2-LOiozl06x9I",
             authDomain: "base-pi-27f19.firebaseapp.com",
@@ -60,13 +61,11 @@
             appId: "1:891020319442:web:db99137022719dfcbe2b0b",
         };
 
-        // Certifique-se de que o Firebase é carregado antes de qualquer outra coisa
+        // Inicializa o Firebase corretamente
         firebase.initializeApp(firebaseConfig);
-
-        // Agora o Firebase está inicializado, podemos acessar o database
         const database = firebase.database();
 
-        // Função para adicionar uma nova linha à tabela
+        // Adicionar nova linha na tabela
         function addRow() {
             const tableBody = document.querySelector("#geralTable tbody");
             const newRow = tableBody.insertRow();
@@ -90,14 +89,14 @@
             newRowRef.set(rowData);
         }
 
-        // Função para exportar a tabela para o Excel
+        // Exportar tabela para Excel
         function exportTableToExcel() {
             const table = document.getElementById("geralTable");
             const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
             XLSX.writeFile(workbook, "TabelaExportada.xlsx");
         }
 
-        // Função para exibir o conteúdo baseado na seleção do menu
+        // Mostrar conteúdo baseado no menu
         function showContent(section) {
             const contentDiv = document.getElementById("content");
             contentDiv.style.display = "none";
@@ -108,8 +107,6 @@
                 document.querySelector(".tabela").style.display = "none";
             }
         }
-
-
     </script>
 </body>
 
