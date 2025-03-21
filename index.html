@@ -123,6 +123,7 @@
                 alert("Dados salvos com sucesso no Firebase!");
                 closeModal(); // Fecha o modal após salvar
             } catch (e) {
+                console.log()
                 console.error("Erro ao salvar no Firebase: ", e);
                 alert("Erro ao salvar os dados.");
             }
