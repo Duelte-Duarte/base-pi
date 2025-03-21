@@ -25,7 +25,7 @@
         <p>Selecione uma opção no menu para visualizar as informações.</p>
     </div>
 
-    <div class="tabela">
+    <div class="tabela" id="tabela">
         <div class="buttons">
             <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
             <button id="inserir" onclick="addRow()">Adicionar Linha</button>
@@ -33,17 +33,20 @@
     </div>
 
     <script>
+        // Função global para manipular a exibição dos conteúdos
         function showContent(option) {
             const tabela = document.getElementById('tabela');
-            
+            const content = document.getElementById('content');
+
             if (option === 'GERAL') {
-                tabela.style.display = 'block'; // Mostra a tabela
+                tabela.style.display = 'block'; // Exibe a tabela
+                content.style.display = 'none'
             } else {
-                tabela.style.display = 'none'; // Esconde a tabela
+                tabela.style.display = 'none'; // Oculta a tabela
+                content.style.display = 'block'
             }
 
-            // Caso queira alterar o conteúdo principal
-            const content = document.getElementById('content');
+            // Atualiza o conteúdo principal
             content.innerHTML = `<h1>${option}</h1><p>Você selecionou a opção ${option}.</p>`;
         }
     </script>
