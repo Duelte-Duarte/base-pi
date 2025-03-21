@@ -85,6 +85,17 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
+            authDomain: "base-piaui.firebaseapp.com",
+            projectId: "base-piaui",
+            storageBucket: "base-piaui.firebasestorage.app",
+            messagingSenderId: "752056656550",
+            appId: "1:752056656550:web:cabe9689f4284405088a67",
+            measurementId: "G-VNWL9W3NT1"
+        };
+
         // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
