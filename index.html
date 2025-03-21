@@ -82,31 +82,14 @@
     </div>
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
-            authDomain: "base-piaui.firebaseapp.com",
-            projectId: "base-piaui",
-            storageBucket: "base-piaui.firebasestorage.app",
-            messagingSenderId: "752056656550",
-            appId: "1:752056656550:web:cabe9689f4284405088a67",
-            measurementId: "G-VNWL9W3NT1"
-        };
-
-        // Initialize Firebase
+        // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        // Função para salvar dados do modal "GERAL" no Firebase na coleção "dados_completos"
+        // Função para salvar dados do modal "GERAL" no Firebase
         async function saveGeneralData(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
 
@@ -134,7 +117,7 @@
             }
         }
 
-        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase na coleção "dados_completos"
+        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
         async function saveImovelData(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
 
@@ -163,6 +146,7 @@
                 alert("Erro ao salvar os dados.");
             }
         }
+
     </script>
 
     <script>
