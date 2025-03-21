@@ -6,81 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Controle</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Importando o Firebase com módulos -->
-    <script type="module">
-        // Importando funções necessárias
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
-    
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
-            authDomain: "base-piaui.firebaseapp.com",
-            projectId: "base-piaui",
-            storageBucket: "base-piaui.appspot.com",
-            messagingSenderId: "752056656550",
-            appId: "1:752056656550:web:cabe9689f4284405088a67",
-            measurementId: "G-VNWL9W3NT1"
-        };
-    
-        // Inicializando o Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-    
-        // Função para carregar dados do Firebase
-        window.loadData = function () {
-            const tableBody = document.querySelector("#geralTable tbody");
-            const dbRef = ref(database, "tabela");
-    
-            get(dbRef)
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        tableBody.innerHTML = ""; // Limpar linhas existentes
-                        Object.keys(data).forEach((key) => {
-                            const row = data[key];
-                            const newRow = tableBody.insertRow();
-                            newRow.insertCell().textContent = row.scpjud;
-                            newRow.insertCell().textContent = row.ramo;
-                            newRow.insertCell().textContent = row.tipoAcao;
-                            newRow.insertCell().textContent = row.observacao;
-                        });
-                    } else {
-                        console.log("Nenhum dado disponível.");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Erro ao carregar dados: ", error);
-                });
-        };
-    
-        // Função para adicionar nova linha e salvar no Firebase
-        window.addRow = function () {
-            const newRowData = {
-                scpjud: "Novo SCPJUD",
-                ramo: "Novo Ramo",
-                tipoAcao: "Novo Tipo de Ação",
-                observacao: "Nova Observação",
-            };
-    
-            // Salvar no Firebase
-            const newRowRef = push(ref(database, "tabela"));
-            set(newRowRef, newRowData)
-                .then(() => {
-                    console.log("Dados salvos com sucesso.");
-                    window.loadData(); // Atualizar tabela
-                })
-                .catch((error) => {
-                    console.error("Erro ao salvar dados: ", error);
-                });
-        };
-    
-        // Carregar dados ao iniciar a página
-        window.onload = function () {
-            loadData();
-        };
-    </script>
-    
 </head>
 
 <body>
@@ -105,20 +30,23 @@
             <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
             <button id="inserir" onclick="addRow()">Adicionar Linha</button>
         </div>
-        <table id="geralTable" border="1">
-            <thead>
-                <tr>
-                    <th>SCPJUD</th>
-                    <th>RAMO</th>
-                    <th>TIPO DE AÇÃO</th>
-                    <th>OBSERVAÇÃO</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- As linhas serão adicionadas dinamicamente -->
-            </tbody>
-        </table>
     </div>
+
+    <script>
+        function showContent(option) {
+            const tabela = document.getElementById('tabela');
+            
+            if (option === 'GERAL') {
+                tabela.style.display = 'block'; // Mostra a tabela
+            } else {
+                tabela.style.display = 'none'; // Esconde a tabela
+            }
+
+            // Caso queira alterar o conteúdo principal
+            const content = document.getElementById('content');
+            content.innerHTML = `<h1>${option}</h1><p>Você selecionou a opção ${option}.</p>`;
+        }
+    </script>
 </body>
 
 </html>
