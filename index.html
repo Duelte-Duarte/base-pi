@@ -106,8 +106,8 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-                // Função para salvar dados do modal "GERAL" no Firebase
-                async function saveGeneralData(event) {
+        // Função para salvar dados do modal "GERAL" no Firebase na coleção "dados_completos"
+        async function saveGeneralData(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
 
             const scpjud = document.getElementById('scpjud').value;
@@ -116,12 +116,14 @@
             const observacao = document.getElementById('observacao').value;
 
             try {
-                // Salvar dados na coleção 'geral'
-                await addDoc(collection(db, "geral"), {
+                // Salvar dados na coleção 'dados_completos'
+                await addDoc(collection(db, "dados_completos"), {
+                    tipo: "GERAL", // Tipo para identificar que são dados do formulário "GERAL"
                     scpjud: scpjud,
                     ramo: ramo,
                     tipoAcao: tipoAcao,
-                    observacao: observacao
+                    observacao: observacao,
+                    timestamp: new Date() // Adicionando um campo de data para registro
                 });
 
                 alert("Dados salvos com sucesso no Firebase!");
@@ -132,7 +134,7 @@
             }
         }
 
-        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
+        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase na coleção "dados_completos"
         async function saveImovelData(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
 
@@ -143,13 +145,15 @@
             const endereco = document.getElementById('endereco').value;
 
             try {
-                // Salvar dados na coleção 'dados_imovel'
-                await addDoc(collection(db, "dados_imovel"), {
+                // Salvar dados na coleção 'dados_completos'
+                await addDoc(collection(db, "dados_completos"), {
+                    tipo: "IMOVEL", // Tipo para identificar que são dados do formulário "DADOS DO IMÓVEL"
                     scpjud: scpjud,
                     residencial: residencial,
                     bloco: bloco,
                     municipio: municipio,
-                    endereco: endereco
+                    endereco: endereco,
+                    timestamp: new Date() // Adicionando um campo de data para registro
                 });
 
                 alert("Dados do imóvel salvos com sucesso no Firebase!");
