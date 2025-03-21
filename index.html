@@ -99,11 +99,10 @@
         // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        console.log(db);  // Aqui o db deve já estar definido
 
         // Função para salvar dados do modal "GERAL" no Firebase
         async function saveGeneralData(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
+            event.preventDefault(); // Impede o comportamento padrão do formulário
 
             const scpjud = document.getElementById('scpjud').value;
             const ramo = document.getElementById('ramo').value;
@@ -111,23 +110,25 @@
             const observacao = document.getElementById('observacao').value;
 
             try {
-                // Salvar dados na coleção 'dados_completos'
-                await addDoc(collection(db, "dados_completos"), {
-                    tipo: "GERAL", // Tipo para identificar que são dados do formulário "GERAL"
+                // Salva os dados na coleção 'dados_completos'
+                const docRef = await addDoc(collection(db, "dados_completos"), {
+                    tipo: "GERAL", // Adicionando tipo para facilitar a identificação
                     scpjud: scpjud,
                     ramo: ramo,
                     tipoAcao: tipoAcao,
                     observacao: observacao,
-                    timestamp: new Date() // Adicionando um campo de data para registro
+                    timestamp: new Date() // Marca o tempo em que os dados foram salvos
                 });
 
+                console.log("Documento escrito com ID: ", docRef.id);  // Exibe o ID do documento recém-criado
                 alert("Dados salvos com sucesso no Firebase!");
-                closeModal(); // Fecha o modal após salvar
+                closeModal();  // Fecha o modal
             } catch (e) {
                 console.error("Erro ao salvar no Firebase: ", e);
                 alert("Erro ao salvar os dados.");
             }
         }
+
 
         // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
         async function saveImovelData(event) {
