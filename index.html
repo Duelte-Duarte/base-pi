@@ -13,7 +13,7 @@
         <h2>Base Piauí</h2>
         <ul>
             <li><button onclick="showContent('GERAL')">GERAL</button></li>
-            <li><button onclick="showContent('DADOS DO IMÓVEL')">DADOS DO IMÓVEL</button></li>
+            <li><button onclick="showContent('DADOS-DO-IMÓVEL')">DADOS DO IMÓVEL</button></li>
             <li><button onclick="showContent('INFORMAÇÕES DO PROCESSO')">INFORMAÇÕES DO PROCESSO</button></li>
             <li><button onclick="showContent('INFORMAÇÕES PAGAMENTOS')">INFORMAÇÕES PAGAMENTOS</button></li>
             <li><button onclick="showContent('INFORMAÇÕES REEMBOLSO')">INFORMAÇÕES REEMBOLSO</button></li>
@@ -29,6 +29,13 @@
         <div class="buttons">
             <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
             <button id="inserir" onclick="showModal()">Adicionar Linha</button>
+        </div>
+    </div>
+
+    <div class="tabela" id="tabelaDados">
+        <div class="buttons">
+            <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
+            <button id="inserirDados" onclick="showModalDados()">Adicionar Linha</button>
         </div>
     </div>
 
@@ -52,17 +59,46 @@
         </div>
     </div>
 
+    <!-- Modal Dados -->
+    <div id="myModalDados" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModalDados()">&times;</span>
+            <h2>Adicionar Linha</h2>
+            <form id="formModal">
+                <label for="scpjud">SCPJUD:</label><br>
+                <input type="text" id="scpjud" name="scpjud" required><br><br>
+                <label for="residencial">RESIDENCIAL:</label><br>
+                <input type="text" id="residencial" name="residencial" required><br><br>
+                <label for="bloco">BLOCOS:</label><br>
+                <input type="text" id="bloco" name="bloco" required><br><br>
+                <label for="municipio">MUNICÍPIO:</label><br>
+                <input type="text" id="municipio" name="municipio" required><br><br>
+                <label for="endereco">ENDEREÇO:</label><br>
+                <textarea id="endereco" name="endereco" required></textarea><br><br>
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="closeModalDados()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Função para exibir o conteúdo das opções
         function showContent(option) {
             const tabela = document.getElementById('tabela');
+            const tabelaDados = document.getElementById('tabelaDados');
             const content = document.getElementById('content');
 
             if (option === 'GERAL') {
                 tabela.style.display = 'block'; // Exibe a tabela
                 content.style.display = 'none'
+                tabelaDados.style.display = 'none';
+            } else if (option === 'DADOS-DO-IMÓVEL') {
+                tabelaDados.style.display = 'block'; // Exibe a tabela
+                content.style.display = 'none'
+                tabela.style.display = 'none';
             } else {
                 tabela.style.display = 'none'; // Oculta a tabela
+                tabelaDados.style.display = 'none';
                 content.style.display = 'block'
             }
 
@@ -76,41 +112,54 @@
             modal.style.display = "block";
         }
 
+        // Função para mostrar o modal Dados
+        function showModalDados() {
+            const modalDados = document.getElementById("myModalDados");
+            modalDados.style.display = "block";
+        }
+
+
         // Função para fechar o modal
         function closeModal() {
             const modal = document.getElementById("myModal");
             modal.style.display = "none";
         }
 
-        // Função para adicionar uma nova linha na tabela (caso haja uma tabela)
-        function addRow() {
-            const form = document.getElementById('formModal');
-            const scpjud = document.getElementById('scpjud').value;
-            const ramo = document.getElementById('ramo').value;
-            const tipoAcao = document.getElementById('tipoAcao').value;
-            const observacao = document.getElementById('observacao').value;
-
-            // Aqui você pode adicionar uma nova linha na tabela, por exemplo
-            // Atualizando a lógica para inserir a linha na tabela
-            console.log("Nova Linha:", { scpjud, ramo, tipoAcao, observacao });
-
-            // Fechar o modal após salvar
-            closeModal();
+        // Função para fechar o modal Dados
+        function closeModalDados() {
+            const modalDados = document.getElementById("myModalDados");
+            modalDados.style.display = "none";
         }
 
         // Fechar o modal quando o usuário clicar fora dele
         window.onclick = function (event) {
             const modal = document.getElementById("myModal");
+            const modalDados = document.getElementById("myModalDados");
             if (event.target === modal) {
                 closeModal();
             }
+            if (event.target === modalDados) {
+                closeModalDados();
+            }
         };
 
-        // Prevenir o envio do formulário ao pressionar enter
-        document.getElementById("formModal").addEventListener("submit", function (e) {
-            e.preventDefault();
-            addRow();
-        });
+        // Função para exportar a tabela para Excel
+        function exportTableToExcel() {
+            const table = document.getElementById("tabelaDados");
+            let tableHTML = table.outerHTML.replace(/ /g, '%20');
+
+            // Criando um link temporário para a exportação
+            const downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+
+            downloadLink.href = 'data:application/vnd.ms-excel,' + tableHTML;
+            downloadLink.target = '_blank';
+            downloadLink.download = 'tabela_dados.xls';
+            downloadLink.click();
+
+            // Remover o link temporário
+            document.body.removeChild(downloadLink);
+        }
     </script>
 </body>
 
