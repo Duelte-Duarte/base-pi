@@ -28,12 +28,32 @@
     <div class="tabela" id="tabela">
         <div class="buttons">
             <button id="exportar" onclick="exportTableToExcel()">Exportar para Excel</button>
-            <button id="inserir" onclick="addRow()">Adicionar Linha</button>
+            <button id="inserir" onclick="showModal()">Adicionar Linha</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Adicionar Linha</h2>
+            <form id="formModal">
+                <label for="scpjud">SCPJUD:</label><br>
+                <input type="text" id="scpjud" name="scpjud" required><br><br>
+                <label for="ramo">RAMO:</label><br>
+                <input type="text" id="ramo" name="ramo" required><br><br>
+                <label for="tipoAcao">TIPO DE AÇÃO:</label><br>
+                <input type="text" id="tipoAcao" name="tipoAcao" required><br><br>
+                <label for="observacao">OBSERVAÇÃO:</label><br>
+                <textarea id="observacao" name="observacao" required></textarea><br><br>
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="closeModal()">Cancelar</button>
+            </form>
         </div>
     </div>
 
     <script>
-        // Função global para manipular a exibição dos conteúdos
+        // Função para exibir o conteúdo das opções
         function showContent(option) {
             const tabela = document.getElementById('tabela');
             const content = document.getElementById('content');
@@ -49,6 +69,48 @@
             // Atualiza o conteúdo principal
             content.innerHTML = `<h1>${option}</h1><p>Você selecionou a opção ${option}.</p>`;
         }
+
+        // Função para mostrar o modal
+        function showModal() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "block";
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        // Função para adicionar uma nova linha na tabela (caso haja uma tabela)
+        function addRow() {
+            const form = document.getElementById('formModal');
+            const scpjud = document.getElementById('scpjud').value;
+            const ramo = document.getElementById('ramo').value;
+            const tipoAcao = document.getElementById('tipoAcao').value;
+            const observacao = document.getElementById('observacao').value;
+
+            // Aqui você pode adicionar uma nova linha na tabela, por exemplo
+            // Atualizando a lógica para inserir a linha na tabela
+            console.log("Nova Linha:", { scpjud, ramo, tipoAcao, observacao });
+
+            // Fechar o modal após salvar
+            closeModal();
+        }
+
+        // Fechar o modal quando o usuário clicar fora dele
+        window.onclick = function (event) {
+            const modal = document.getElementById("myModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Prevenir o envio do formulário ao pressionar enter
+        document.getElementById("formModal").addEventListener("submit", function (e) {
+            e.preventDefault();
+            addRow();
+        });
     </script>
 </body>
 
