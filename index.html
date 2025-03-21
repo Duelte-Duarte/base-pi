@@ -99,6 +99,7 @@
         // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        console.log(db);  // Aqui o db deve já estar definido
 
         // Função para salvar dados do modal "GERAL" no Firebase
         async function saveGeneralData(event) {
