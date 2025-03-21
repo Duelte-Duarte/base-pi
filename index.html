@@ -6,34 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema com Barra Lateral</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Importando o Firebase com módulos -->
-    <script type="module">
-        // Importando funções necessárias
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
-    
+    <!-- Importando Firebase via CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database-compat.js"></script>
+    <script>
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
             authDomain: "base-piaui.firebaseapp.com",
-            databaseURL: "https://base-piaui.firebaseio.com", // Certifique-se de incluir o URL do Realtime Database
+            databaseURL: "https://base-piaui.firebaseio.com",
             projectId: "base-piaui",
             storageBucket: "base-piaui.appspot.com",
             messagingSenderId: "752056656550",
             appId: "1:752056656550:web:cabe9689f4284405088a67",
             measurementId: "G-VNWL9W3NT1"
         };
-    
+
         // Inicializando o Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-    
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Função para carregar dados do Firebase
-        window.loadData = function () {
+        function loadData() {
             const tableBody = document.querySelector("#geralTable tbody");
-            const dbRef = ref(database, "tabela");
-    
-            get(dbRef)
+            const dbRef = database.ref("tabela");
+
+            dbRef.get()
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
@@ -53,40 +51,39 @@
                 .catch((error) => {
                     console.error("Erro ao carregar dados: ", error);
                 });
-        };
-    
+        }
+
         // Função para adicionar nova linha e salvar no Firebase
-        window.addRow = function () {
+        function addRow() {
             const newRowData = {
                 scpjud: "Novo SCPJUD",
                 ramo: "Novo Ramo",
                 tipoAcao: "Novo Tipo de Ação",
                 observacao: "Nova Observação",
             };
-    
+
             // Salvar no Firebase
-            const newRowRef = push(ref(database, "tabela"));
-            set(newRowRef, newRowData)
+            const newRowRef = database.ref("tabela").push();
+            newRowRef.set(newRowData)
                 .then(() => {
                     console.log("Dados salvos com sucesso.");
-                    window.loadData(); // Atualizar tabela
+                    loadData(); // Atualizar tabela
                 })
                 .catch((error) => {
                     console.error("Erro ao salvar dados: ", error);
                 });
-        };
-    
+        }
+
         // Carregar dados ao iniciar a página
         window.onload = function () {
             loadData();
         };
     </script>
-    
 </head>
 
 <body>
     <div class="sidebar">
-        <h2>Menu</h2>
+        <h2>Base Piauí</h2>
         <ul>
             <li><button onclick="showContent('GERAL')">GERAL</button></li>
             <li><button onclick="showContent('DADOS DO IMÓVEL')">DADOS DO IMÓVEL</button></li>
