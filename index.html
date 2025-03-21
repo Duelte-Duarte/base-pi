@@ -44,7 +44,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Adicionar Linha</h2>
-            <form id="formModal">
+            <form id="formModal" onsubmit="saveGeneralData(event)">
                 <label for="scpjud">SCPJUD:</label><br>
                 <input type="text" id="scpjud" name="scpjud" required><br><br>
                 <label for="ramo">RAMO:</label><br>
@@ -55,7 +55,7 @@
                 <textarea id="observacao" name="observacao" required></textarea><br><br>
                 <button type="submit">Salvar</button>
                 <button type="button" onclick="closeModal()">Cancelar</button>
-            </form>
+            </form>            
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModalDados()">&times;</span>
             <h2>Adicionar Linha</h2>
-            <form id="formModal">
+            <form id="formModal" onsubmit="saveImovelData(event)">
                 <label for="scpjud">SCPJUD:</label><br>
                 <input type="text" id="scpjud" name="scpjud" required><br><br>
                 <label for="residencial">RESIDENCIAL:</label><br>
@@ -77,9 +77,35 @@
                 <textarea id="endereco" name="endereco" required></textarea><br><br>
                 <button type="submit">Salvar</button>
                 <button type="button" onclick="closeModalDados()">Cancelar</button>
-            </form>
+            </form>            
         </div>
     </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6SpD65E1d2X5I5_TLOAZa37xqKoJ7UZQ",
+            authDomain: "base-piaui.firebaseapp.com",
+            projectId: "base-piaui",
+            storageBucket: "base-piaui.firebasestorage.app",
+            messagingSenderId: "752056656550",
+            appId: "1:752056656550:web:cabe9689f4284405088a67",
+            measurementId: "G-VNWL9W3NT1"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+    </script>
 
     <script>
         // Função para exibir o conteúdo das opções
@@ -118,7 +144,6 @@
             modalDados.style.display = "block";
         }
 
-
         // Função para fechar o modal
         function closeModal() {
             const modal = document.getElementById("myModal");
@@ -142,6 +167,62 @@
                 closeModalDados();
             }
         };
+
+        // Função para salvar dados do modal "GERAL" no Firebase
+        async function saveGeneralData(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const scpjud = document.getElementById('scpjud').value;
+            const ramo = document.getElementById('ramo').value;
+            const tipoAcao = document.getElementById('tipoAcao').value;
+            const observacao = document.getElementById('observacao').value;
+
+            try {
+                // Salvar dados na coleção 'geral'
+                await addDoc(collection(db, "geral"), {
+                    scpjud: scpjud,
+                    ramo: ramo,
+                    tipoAcao: tipoAcao,
+                    observacao: observacao
+                });
+
+                alert("Dados salvos com sucesso no Firebase!");
+                closeModal(); // Fecha o modal após salvar
+            } catch (e) {
+                console.error("Erro ao salvar no Firebase: ", e);
+                alert("Erro ao salvar os dados.");
+            }
+        }
+
+        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
+        async function saveImovelData(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const scpjud = document.getElementById('scpjud').value;
+            const residencial = document.getElementById('residencial').value;
+            const bloco = document.getElementById('bloco').value;
+            const municipio = document.getElementById('municipio').value;
+            const endereco = document.getElementById('endereco').value;
+
+            try {
+                // Salvar dados na coleção 'dados_imovel'
+                await addDoc(collection(db, "dados_imovel"), {
+                    scpjud: scpjud,
+                    residencial: residencial,
+                    bloco: bloco,
+                    municipio: municipio,
+                    endereco: endereco
+                });
+
+                alert("Dados do imóvel salvos com sucesso no Firebase!");
+                closeModalDados(); // Fecha o modal após salvar
+            } catch (e) {
+                console.error("Erro ao salvar no Firebase: ", e);
+                alert("Erro ao salvar os dados.");
+            }
+        }
+
+
 
         // Função para exportar a tabela para Excel
         function exportTableToExcel() {
