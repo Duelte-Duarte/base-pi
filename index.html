@@ -105,6 +105,60 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+
+                // Função para salvar dados do modal "GERAL" no Firebase
+                async function saveGeneralData(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const scpjud = document.getElementById('scpjud').value;
+            const ramo = document.getElementById('ramo').value;
+            const tipoAcao = document.getElementById('tipoAcao').value;
+            const observacao = document.getElementById('observacao').value;
+
+            try {
+                // Salvar dados na coleção 'geral'
+                await addDoc(collection(db, "geral"), {
+                    scpjud: scpjud,
+                    ramo: ramo,
+                    tipoAcao: tipoAcao,
+                    observacao: observacao
+                });
+
+                alert("Dados salvos com sucesso no Firebase!");
+                closeModal(); // Fecha o modal após salvar
+            } catch (e) {
+                console.error("Erro ao salvar no Firebase: ", e);
+                alert("Erro ao salvar os dados.");
+            }
+        }
+
+        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
+        async function saveImovelData(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const scpjud = document.getElementById('scpjud').value;
+            const residencial = document.getElementById('residencial').value;
+            const bloco = document.getElementById('bloco').value;
+            const municipio = document.getElementById('municipio').value;
+            const endereco = document.getElementById('endereco').value;
+
+            try {
+                // Salvar dados na coleção 'dados_imovel'
+                await addDoc(collection(db, "dados_imovel"), {
+                    scpjud: scpjud,
+                    residencial: residencial,
+                    bloco: bloco,
+                    municipio: municipio,
+                    endereco: endereco
+                });
+
+                alert("Dados do imóvel salvos com sucesso no Firebase!");
+                closeModalDados(); // Fecha o modal após salvar
+            } catch (e) {
+                console.error("Erro ao salvar no Firebase: ", e);
+                alert("Erro ao salvar os dados.");
+            }
+        }
     </script>
 
     <script>
@@ -167,60 +221,6 @@
                 closeModalDados();
             }
         };
-
-        // Função para salvar dados do modal "GERAL" no Firebase
-        async function saveGeneralData(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
-
-            const scpjud = document.getElementById('scpjud').value;
-            const ramo = document.getElementById('ramo').value;
-            const tipoAcao = document.getElementById('tipoAcao').value;
-            const observacao = document.getElementById('observacao').value;
-
-            try {
-                // Salvar dados na coleção 'geral'
-                await addDoc(collection(db, "geral"), {
-                    scpjud: scpjud,
-                    ramo: ramo,
-                    tipoAcao: tipoAcao,
-                    observacao: observacao
-                });
-
-                alert("Dados salvos com sucesso no Firebase!");
-                closeModal(); // Fecha o modal após salvar
-            } catch (e) {
-                console.error("Erro ao salvar no Firebase: ", e);
-                alert("Erro ao salvar os dados.");
-            }
-        }
-
-        // Função para salvar dados do modal "DADOS DO IMÓVEL" no Firebase
-        async function saveImovelData(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
-
-            const scpjud = document.getElementById('scpjud').value;
-            const residencial = document.getElementById('residencial').value;
-            const bloco = document.getElementById('bloco').value;
-            const municipio = document.getElementById('municipio').value;
-            const endereco = document.getElementById('endereco').value;
-
-            try {
-                // Salvar dados na coleção 'dados_imovel'
-                await addDoc(collection(db, "dados_imovel"), {
-                    scpjud: scpjud,
-                    residencial: residencial,
-                    bloco: bloco,
-                    municipio: municipio,
-                    endereco: endereco
-                });
-
-                alert("Dados do imóvel salvos com sucesso no Firebase!");
-                closeModalDados(); // Fecha o modal após salvar
-            } catch (e) {
-                console.error("Erro ao salvar no Firebase: ", e);
-                alert("Erro ao salvar os dados.");
-            }
-        }
 
         // Função para exportar a tabela para Excel
         function exportTableToExcel() {
