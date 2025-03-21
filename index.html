@@ -44,7 +44,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Adicionar Linha</h2>
-            <form id="formModal" onsubmit="saveGeneralData(event)">
+            <form id="formModalGeral" onsubmit="saveGeneralData(event)">
                 <label for="scpjud">SCPJUD:</label><br>
                 <input type="text" id="scpjud" name="scpjud" required><br><br>
                 <label for="ramo">RAMO:</label><br>
@@ -55,7 +55,7 @@
                 <textarea id="observacao" name="observacao" required></textarea><br><br>
                 <button type="submit">Salvar</button>
                 <button type="button" onclick="closeModal()">Cancelar</button>
-            </form>            
+            </form>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModalDados()">&times;</span>
             <h2>Adicionar Linha</h2>
-            <form id="formModal" onsubmit="saveImovelData(event)">
+            <form id="formModalImovel" onsubmit="saveImovelData(event)">
                 <label for="scpjud">SCPJUD:</label><br>
                 <input type="text" id="scpjud" name="scpjud" required><br><br>
                 <label for="residencial">RESIDENCIAL:</label><br>
@@ -77,7 +77,7 @@
                 <textarea id="endereco" name="endereco" required></textarea><br><br>
                 <button type="submit">Salvar</button>
                 <button type="button" onclick="closeModalDados()">Cancelar</button>
-            </form>            
+            </form>
         </div>
     </div>
 
@@ -221,8 +221,6 @@
                 alert("Erro ao salvar os dados.");
             }
         }
-
-
 
         // Função para exportar a tabela para Excel
         function exportTableToExcel() {
